@@ -3,6 +3,8 @@
 
 ### How to use:
 ```C# 
+// Instantiate class - make sure you provide an API key
+// If you do not have one, sign up and get one at: https://marketstack.com
 MarketStack _stack = new MarketStack(""/*YOUR API KEY HERE*/);
 //THEN
 var res = await _stack.GetEod(new string[] { "TSLA" }, DateTime.Now.AddDays(-7), DateTime.Now, 500, 0);
