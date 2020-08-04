@@ -1,5 +1,5 @@
 # MarketStackDotNetCore
-DotNet standard API wrapper for access to "APILayer's" stock web services (https://marketstack.com)
+Cross platform compatible DotNet standard API wrapper for access to "APILayer's" stock web services (https://marketstack.com)
 
 ### How to use:
 ```C# 
