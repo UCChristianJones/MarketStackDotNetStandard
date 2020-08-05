@@ -14,11 +14,12 @@ namespace Test
         static void Main(string[] args)
         {
             ShowEOD();
-            ShowIntraDay();
-            ShowTickers();
-            ShowExchanges();
-            ShowCurrencies();
-            ShowTimeZones();
+            // uncomment each of the below to try it out
+            //ShowIntraDay();
+            //ShowTickers();
+            //ShowExchanges();
+            //ShowCurrencies();
+            //ShowTimeZones();
             Console.Read();
         }
 

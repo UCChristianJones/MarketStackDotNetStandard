@@ -10,6 +10,9 @@ namespace APILayer
         public MarketStackException(response error)
         {
             Error = error;
+            // ToDo: add inner exceptions for each of the context.symbols
         }
+
+        public override string Message => Error.error.message;
     }
 }
