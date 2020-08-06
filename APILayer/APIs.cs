@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using APILayer.Errors;
+using APLayer.DataObject;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -32,7 +34,7 @@ namespace APILayer
                 if (await resp.Content.ReadAsStringAsync() is string content && !string.IsNullOrWhiteSpace(content))
                 {
                     if (resp.IsSuccessStatusCode) return JsonConvert.DeserializeObject<T>(content);
-                    else throw new MarketStackException(JsonConvert.DeserializeObject<errors.response>(content));
+                    else throw new MarketStackException(JsonConvert.DeserializeObject<ErrorResponse>(content));
                 }
             }
             return null;
@@ -40,7 +42,7 @@ namespace APILayer
         
         public enum Intervals { _1Min, _5Min, _10Min, _15Min, _30Min, _1Hour, _3Hour, _6Hour, _12Hour, _24Hour }
 
-        public Task<eod.response> GetEod(string[] symbols, DateTime? from = null, DateTime? to = null, int limit = 100, int offset = 0)
+        public Task<EODResponse> GetEod(string[] symbols, DateTime? from = null, DateTime? to = null, int limit = 100, int offset = 0)
         {
             List<string> extraData = new List<string>
             {
@@ -50,11 +52,11 @@ namespace APILayer
             };
             if (from.HasValue) extraData.Add($"date_from={from.Value.ToString("s")}");
             if (to.HasValue) extraData.Add($"date_to={to.Value.ToString("s")}");
-            return GetData<eod.response>("eod", extraData.ToArray());
+            return GetData<EODResponse>("eod", extraData.ToArray());
 
         }
 
-        public Task<intraday.response> GetIntraDay(string[] symbols, Intervals interval = Intervals._1Hour, DateTime? from = null, DateTime? to = null, int limit = 100, int offset = 0)
+        public Task<IntradayResponse> GetIntraDay(string[] symbols, Intervals interval = Intervals._1Hour, DateTime? from = null, DateTime? to = null, int limit = 100, int offset = 0)
         {
             List<string> extraData = new List<string>
             {
@@ -64,10 +66,10 @@ namespace APILayer
             };
             if (from.HasValue) extraData.Add($"date_from={from.Value.ToString("s")}");
             if (to.HasValue) extraData.Add($"date_to={to.Value.ToString("s")}");
-            return GetData<intraday.response>("intraday", extraData.ToArray());
+            return GetData<IntradayResponse>("intraday", extraData.ToArray());
         }
 
-        public Task<tickers.response> GetTickers(string[] symbols, int limit = 100, int offset = 0) 
+        public Task<TickerResponse> GetTickers(string[] symbols, int limit = 100, int offset = 0) 
         {
             List<string> extraData = new List<string>
             {
@@ -75,34 +77,34 @@ namespace APILayer
                 $"offset={offset}"
             };
             if (symbols.Length > 0) extraData.Add($"symbols={string.Join(",", symbols)}");
-            return GetData<tickers.response>("tickers", extraData.ToArray());
+            return GetData<TickerResponse>("tickers", extraData.ToArray());
         }
 
-        public Task<exchanges.response> GetExchanges()
+        public Task<ExchangeResponse> GetExchanges()
         {
             List<string> extraData = new List<string>
             {
                 $"limit=1000"
             };
-            return GetData<exchanges.response>("exchanges", extraData.ToArray());
+            return GetData<ExchangeResponse>("exchanges", extraData.ToArray());
         }
 
-        public Task<currencies.response> GetCurrencies()
+        public Task<CurrencyResponse> GetCurrencies()
         {
             List<string> extraData = new List<string>
             {
                 $"limit=1000"
             };
-            return GetData<currencies.response>("currencies", extraData.ToArray());
+            return GetData<CurrencyResponse>("currencies", extraData.ToArray());
         }
 
-        public Task<timezones.response> GetTimeZones()
+        public Task<TimezoneResponse> GetTimeZones()
         {
             List<string> extraData = new List<string>
             {
                 $"limit=1000"
             };
-            return GetData<timezones.response>("timezones", extraData.ToArray());
+            return GetData<TimezoneResponse>("timezones", extraData.ToArray());
         }
     }
 }

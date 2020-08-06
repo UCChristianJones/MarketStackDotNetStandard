@@ -1,34 +1,8 @@
 ﻿using System;
 
-namespace APILayer.errors
+namespace APLayer.DataObject
 {
-    public class symbols
-    {
-        public string key { get; set; }
-        public string message { get; set; }
-    }
-
-    public class context
-    {
-        public symbols[] symbols { get; set; }
-    }
-
-    public class error
-    {
-        public string code { get; set; }
-        public string message { get; set; }
-        public context context { get; set; }
-    }
-
-    public class response
-    {
-        public error error { get; set; }
-    }
-}
-
-namespace APILayer.eod
-{
-    public class pagination
+    public class Pagination
     {
         public int limit { get; set; }
         public int offset { get; set; }
@@ -36,7 +10,13 @@ namespace APILayer.eod
         public int total { get; set; }
     }
 
-    public class data
+    public abstract class Response<T> where T : class
+    {
+        public Pagination pagination { get; set; }
+        public T[] data;
+    }
+
+    public class EODData
     {
         public DateTime date { get; set; }
         public string symbol { get; set; }
@@ -53,24 +33,7 @@ namespace APILayer.eod
         public double adj_volume { get; set; }
     }
 
-    public class response
-    {
-        public pagination pagination { get; set; }
-        public data[] data { get; set; }
-    }
-}
-
-namespace APILayer.intraday
-{
-    public class pagination
-    {
-        public int limit { get; set; }
-        public int offset { get; set; }
-        public int count { get; set; }
-        public int total { get; set; }
-    }
-
-    public class data
+    public class IntradayData
     {
         public DateTime date { get; set; }
         public string symbol { get; set; }
@@ -83,75 +46,14 @@ namespace APILayer.intraday
         public double volume { get; set; }
     }
 
-    public class response
-    {
-        public pagination pagination { get; set; }
-        public data[] data { get; set; }
-    }
-}
-
-namespace APILayer.tickers
-{
-    public class pagination
-    {
-        public int limit { get; set; }
-        public int offset { get; set; }
-        public int count { get; set; }
-        public int total { get; set; }
-    }
-
-    public class _timezone
-    {
-        public string timezone { get; set; }
-        public string abbr { get; set; }
-        public string abbr_dst { get; set; }
-    }
-
-    public class stock_exchange
-    {
-        public string name { get; set; }
-        public string acronym { get; set; }
-        public string mic { get; set; }
-        public string country { get; set; }
-        public string country_code { get; set; }
-        public string city { get; set; }
-        public string website { get; set; }
-        public _timezone timezone { get; set; }
-    }
-
-    public class data
+    public class TickerData
     {
         public string name { get; set; }
         public string symbol { get; set; }
-        public stock_exchange stock_exchange { get; set; }
+        public ExchangeData stock_exchange { get; set; }
     }
 
-    public class response
-    {
-        public pagination pagination { get; set; }
-        public data[] data { get; set; }
-    }
-}
-
-
-namespace APILayer.exchanges
-{
-    public class pagination
-    {
-        public int limit { get; set; }
-        public int offset { get; set; }
-        public int count { get; set; }
-        public int total { get; set; }
-    }
-
-    public class _timezone
-    {
-        public string timezone { get; set; }
-        public string abbr { get; set; }
-        public string abbr_dst { get; set; }
-    }
-
-    public class data
+    public class ExchangeData
     {
         public string name { get; set; }
         public string acronym { get; set; }
@@ -160,27 +62,10 @@ namespace APILayer.exchanges
         public string country_code { get; set; }
         public string city { get; set; }
         public string website { get; set; }
-        public _timezone timezone { get; set; }
+        public TimezoneData timezone { get; set; }
     }
 
-    public class response
-    {
-        public pagination pagination { get; set; }
-        public data[] data { get; set; }
-    }
-}
-
-namespace APILayer.currencies
-{
-    public class pagination
-    {
-        public int limit { get; set; }
-        public int offset { get; set; }
-        public int count { get; set; }
-        public int total { get; set; }
-    }
-
-    public class data
+    public class CurrencyData
     {
         public string code { get; set; }
         public string name { get; set; }
@@ -188,33 +73,18 @@ namespace APILayer.currencies
         public string symbol_native { get; set; }
     }
 
-    public class response
-    {
-        public pagination pagination { get; set; }
-        public data[] data { get; set; }
-    }
-}
-
-namespace APILayer.timezones
-{
-    public class pagination
-    {
-        public int limit { get; set; }
-        public int offset { get; set; }
-        public int count { get; set; }
-        public int total { get; set; }
-    }
-
-    public class data
+    public class TimezoneData
     {
         public string timezone { get; set; }
         public string abbr { get; set; }
         public string abbr_dst { get; set; }
     }
 
-    public class response
-    {
-        public pagination pagination { get; set; }
-        public data[] data { get; set; }
-    }
+    public class EODResponse : Response<EODData> { }
+    public class IntradayResponse : Response<IntradayData> { }
+    public class TickerResponse : Response<TickerData> { }
+    public class ExchangeResponse : Response<ExchangeData> { }
+    public class CurrencyResponse : Response<CurrencyData> { }
+    public class TimezoneResponse : Response<TimezoneData> { }
+
 }
