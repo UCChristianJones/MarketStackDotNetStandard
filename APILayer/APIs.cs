@@ -80,29 +80,32 @@ namespace APILayer
             return GetData<TickerResponse>("tickers", extraData.ToArray());
         }
 
-        public Task<ExchangeResponse> GetExchanges()
+        public Task<ExchangeResponse> GetExchanges(int limit = 1000, int offset = 0)
         {
             List<string> extraData = new List<string>
             {
-                $"limit=1000"
+                $"limit={limit}",
+                $"offset={offset}"
             };
             return GetData<ExchangeResponse>("exchanges", extraData.ToArray());
         }
 
-        public Task<CurrencyResponse> GetCurrencies()
+        public Task<CurrencyResponse> GetCurrencies(int limit = 1000, int offset = 0)
         {
             List<string> extraData = new List<string>
             {
-                $"limit=1000"
+                $"limit={limit}",
+                $"offset={offset}"
             };
             return GetData<CurrencyResponse>("currencies", extraData.ToArray());
         }
 
-        public Task<TimezoneResponse> GetTimeZones()
+        public Task<TimezoneResponse> GetTimeZones(int limit = 1000, int offset = 0)
         {
             List<string> extraData = new List<string>
             {
-                $"limit=1000"
+                $"limit={limit}",
+                $"offset={offset}"
             };
             return GetData<TimezoneResponse>("timezones", extraData.ToArray());
         }
