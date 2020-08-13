@@ -1,5 +1,5 @@
 ﻿using APILayer.Errors;
-using APLayer.DataObject;
+using APILayer.DataObject;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ namespace APILayer
             return null;
         }
         
-        public enum Intervals { _1Min, _5Min, _10Min, _15Min, _30Min, _1Hour, _3Hour, _6Hour, _12Hour, _24Hour }
+        public enum Intervals { _1min, _5min, _10min, _15min, _30min, _1hour, _3hour, _6hour, _12hour, _24hour }
 
         public Task<EODResponse> GetEod(string[] symbols, DateTime? from = null, DateTime? to = null, int limit = 100, int offset = 0)
         {
@@ -56,13 +56,14 @@ namespace APILayer
 
         }
 
-        public Task<IntradayResponse> GetIntraDay(string[] symbols, Intervals interval = Intervals._1Hour, DateTime? from = null, DateTime? to = null, int limit = 100, int offset = 0)
+        public Task<IntradayResponse> GetIntraDay(string[] symbols, Intervals interval = Intervals._1hour, DateTime? from = null, DateTime? to = null, int limit = 100, int offset = 0)
         {
             List<string> extraData = new List<string>
             {
                 $"symbols={string.Join(",", symbols)}",
                 $"limit={limit}",
-                $"offset={offset}"
+                $"offset={offset}",
+                $"interval={Enum.GetName(typeof(Intervals), interval).Replace("_","")}"
             };
             if (from.HasValue) extraData.Add($"date_from={from.Value.ToString("s")}");
             if (to.HasValue) extraData.Add($"date_to={to.Value.ToString("s")}");
@@ -77,6 +78,17 @@ namespace APILayer
                 $"offset={offset}"
             };
             if (symbols.Length > 0) extraData.Add($"symbols={string.Join(",", symbols)}");
+            return GetData<TickerResponse>("tickers", extraData.ToArray());
+        }
+
+        public Task<TickerResponse> GetTickers(string exchange, int limit = 100, int offset = 0) 
+        {
+            List<string> extraData = new List<string>
+            {
+                $"limit={limit}",
+                $"offset={offset}",
+                $"exchange={exchange}"
+            };
             return GetData<TickerResponse>("tickers", extraData.ToArray());
         }
 

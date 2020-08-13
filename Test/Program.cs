@@ -51,7 +51,7 @@ namespace Test
         static async void ShowIntraDay()
         {
             WriteLine(nameof(ShowIntraDay));
-            var res = await _stack.GetAllIntraDay(new string[] { "AAPL" }, MarketStack.Intervals._30Min, DateTime.Now.AddYears(-1), DateTime.Now);
+            var res = await _stack.GetAllIntraDay(new string[] { "AAPL", }, MarketStack.Intervals._15min, DateTime.Now.AddYears(-1), DateTime.Now);
             WriteLines(res
                 .Select(d => $"Page: Close[{d.close}], Date[{d.date}], Exchange[{d.exchange}], High[{d.high}], Last[{d.last}], Low[{d.low}], Open[{d.open}], Symbol[{d.symbol}], Volume[{d.volume}]"));
         }
@@ -59,7 +59,7 @@ namespace Test
         static async void ShowTickers()
         {
             WriteLine(nameof(ShowTickers));
-            var res = await _stack.GetAllTickers(new string[] { "TSLA" });
+            var res = await _stack.GetAllTickers("XLON");
             WriteLines(res
                 .Select(d => $"Page: name[{d.name}], symbol[{d.symbol}], acronym[{d.stock_exchange.acronym}], city[{d.stock_exchange.city}], country[{d.stock_exchange.country}], country_code[{d.stock_exchange.country_code}], mic[{d.stock_exchange.mic}], StkExName[{d.stock_exchange.name}], timezone[{d.stock_exchange.timezone}], website[{d.stock_exchange.website}]"));
         }

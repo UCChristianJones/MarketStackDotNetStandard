@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace APLayer.DataObject
+namespace APILayer.DataObject
 {
     public class Pagination
     {
